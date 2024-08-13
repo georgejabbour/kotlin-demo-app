@@ -27,15 +27,11 @@ fun PlayerLifeTracker(playerName: String, playerLife: Int, onIncrement: () -> Un
         Text(text = "$playerName Life: $playerLife", style = MaterialTheme.typography.headlineMedium)
         Spacer(modifier = Modifier.height(8.dp))
         Row {
-            // Button to increment the player's life total
-            Button(onClick = onIncrement) {
-                Text(text = "+")
-            }
-            Spacer(modifier = Modifier.width(8.dp))
             // Button to decrement the player's life total
-            Button(onClick = onDecrement) {
-                Text(text = "-")
-            }
+            Button(onClick = onDecrement) {Text(text = "-")}
+            Spacer(modifier = Modifier.width(8.dp))
+            // Button to increment the player's life total
+            Button(onClick = onIncrement) {Text(text = "+")}
         }
     }
 }

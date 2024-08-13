@@ -29,20 +29,25 @@ class MainActivity : ComponentActivity() {
                 var showDialog by remember { mutableStateOf(true) }
                 // State to store the starting life total for the game
                 var startingLife by remember { mutableIntStateOf(20) }
+                var numPlayers by remember { mutableIntStateOf(2) }
 
                 // Show the NewGameDialog if showDialog is true
                 if (showDialog) {
                     NewGameDialog(
-                        onStartGame = { life ->
+                        onStartGame = { life, players ->
                             startingLife = life
+                            numPlayers = players
                             showDialog = false
                         },
-                        onDismiss = { showDialog = false }
+                        onDismiss = {
+                            numPlayers = 2 // Reset the number of players when the dialog is dismissed
+                            showDialog = false
+                        }
                     )
                 } else {
-                    // Display the LifeTotalTracker with the selected starting life total
+                    // Display the LifeTotalTracker with the selected starting life total and number of players
                     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                        LifeTotalTracker(startingLife = startingLife)
+                        LifeTotalTracker(startingLife = startingLife, numPlayers = numPlayers)
                     }
                 }
             }

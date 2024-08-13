@@ -9,15 +9,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 /**
- * A composable function that displays the life totals for two players and provides controls to increment, decrement, and reset the life totals.
+ * A composable function that displays the life totals for multiple players and provides controls to increment, decrement, and reset the life totals.
  *
- * @param startingLife The initial life total for both players.
+ * @param startingLife The initial life total for all players.
+ * @param numPlayers The number of players in the game.
  */
 @Composable
-fun LifeTotalTracker(startingLife: Int) {
-    // State variables to keep track of the life totals for both players
-    var player1Life by remember { mutableIntStateOf(startingLife) }
-    var player2Life by remember { mutableIntStateOf(startingLife) }
+fun LifeTotalTracker(startingLife: Int, numPlayers: Int) {
+    // State to keep track of the life totals for all players
+    val playerLives = remember { mutableStateListOf<Int>() }
+
+    // Initialize or reset the playerLives list based on the number of players
+    LaunchedEffect(numPlayers) {
+        playerLives.clear()
+        repeat(numPlayers) {
+            playerLives.add(startingLife)
+        }
+    }
+
     // State to control the visibility of the NewGameDialog
     var showDialog by remember { mutableStateOf(false) }
 
@@ -28,21 +37,17 @@ fun LifeTotalTracker(startingLife: Int) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        // Display the life tracker for Player 1
-        PlayerLifeTracker(
-            playerName = "Player 1",
-            playerLife = player1Life,
-            onIncrement = { player1Life++ },
-            onDecrement = { player1Life-- }
-        )
-        Spacer(modifier = Modifier.height(32.dp))
-        // Display the life tracker for Player 2
-        PlayerLifeTracker(
-            playerName = "Player 2",
-            playerLife = player2Life,
-            onIncrement = { player2Life++ },
-            onDecrement = { player2Life-- }
-        )
+        // Display the life totals for each player
+        playerLives.forEachIndexed { index, life ->
+            PlayerLifeTracker(
+                playerName = "Player ${index + 1}",
+                playerLife = life,
+                onIncrement = { playerLives[index]++ },
+                onDecrement = { playerLives[index]-- }
+            )
+            Spacer(modifier = Modifier.height(32.dp))
+        }
+
         Spacer(modifier = Modifier.height(32.dp))
         // Button to show the NewGameDialog
         Button(onClick = { showDialog = true }) {
@@ -53,9 +58,11 @@ fun LifeTotalTracker(startingLife: Int) {
     // Show the NewGameDialog if showDialog is true
     if (showDialog) {
         NewGameDialog(
-            onStartGame = { life ->
-                player1Life = life
-                player2Life = life
+            onStartGame = { life, num ->
+                playerLives.clear()
+                repeat(num) {
+                    playerLives.add(life)
+                }
                 showDialog = false
             },
             onDismiss = { showDialog = false }
