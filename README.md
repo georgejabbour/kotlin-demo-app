@@ -20,5 +20,5 @@ This is a simple life tracker app built using Jetpack Compose. The app allows us
 
 1. **Clone the repository:**
    ```sh
-   git clone https://github.com/yourusername/life-tracker-app.git
-   cd life-tracker-app
+   git clone https://github.com/georgejabbour/kotlin-demo-app.git
+   cd myapplication
