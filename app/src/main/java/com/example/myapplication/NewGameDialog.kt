@@ -8,9 +8,16 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+/**
+ * A dialog that prompts the user to select the starting life total for a new game.
+ *
+ * @param onStartGame A callback function that is invoked with the selected starting life total when the user starts the game.
+ * @param onDismiss A callback function that is invoked when the dialog is dismissed.
+ */
 @Composable
 fun NewGameDialog(onStartGame: (Int) -> Unit, onDismiss: () -> Unit) {
-    var selectedOption by remember { mutableStateOf(20) }
+    // State to keep track of the selected starting life total option
+    var selectedOption by remember { mutableIntStateOf(20) }
 
     Dialog(onDismissRequest = onDismiss) {
         Surface {
@@ -18,8 +25,10 @@ fun NewGameDialog(onStartGame: (Int) -> Unit, onDismiss: () -> Unit) {
                 modifier = Modifier.padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                // Display the title of the dialog
                 Text(text = "Select Starting Life Total", style = MaterialTheme.typography.headlineMedium)
                 Spacer(modifier = Modifier.height(16.dp))
+                // Display buttons for selecting the starting life total
                 Row {
                     Button(onClick = { selectedOption = 20 }) {
                         Text(text = "20")
@@ -30,6 +39,7 @@ fun NewGameDialog(onStartGame: (Int) -> Unit, onDismiss: () -> Unit) {
                     }
                 }
                 Spacer(modifier = Modifier.height(16.dp))
+                // Button to start the game with the selected starting life total
                 Button(onClick = { onStartGame(selectedOption) }) {
                     Text(text = "Start Game")
                 }

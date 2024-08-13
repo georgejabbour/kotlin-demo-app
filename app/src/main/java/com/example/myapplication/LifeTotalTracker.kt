@@ -8,10 +8,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+/**
+ * A composable function that displays the life totals for two players and provides controls to increment, decrement, and reset the life totals.
+ *
+ * @param startingLife The initial life total for both players.
+ */
 @Composable
 fun LifeTotalTracker(startingLife: Int) {
-    var player1Life by remember { mutableStateOf(startingLife) }
-    var player2Life by remember { mutableStateOf(startingLife) }
+    // State variables to keep track of the life totals for both players
+    var player1Life by remember { mutableIntStateOf(startingLife) }
+    var player2Life by remember { mutableIntStateOf(startingLife) }
 
     Column(
         modifier = Modifier
@@ -20,6 +26,7 @@ fun LifeTotalTracker(startingLife: Int) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        // Display the life tracker for Player 1
         PlayerLifeTracker(
             playerName = "Player 1",
             playerLife = player1Life,
@@ -27,6 +34,7 @@ fun LifeTotalTracker(startingLife: Int) {
             onDecrement = { player1Life-- }
         )
         Spacer(modifier = Modifier.height(32.dp))
+        // Display the life tracker for Player 2
         PlayerLifeTracker(
             playerName = "Player 2",
             playerLife = player2Life,
@@ -34,6 +42,7 @@ fun LifeTotalTracker(startingLife: Int) {
             onDecrement = { player2Life-- }
         )
         Spacer(modifier = Modifier.height(32.dp))
+        // Button to reset the life totals for both players to the starting life total
         Button(onClick = {
             player1Life = startingLife
             player2Life = startingLife
