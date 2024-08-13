@@ -18,6 +18,8 @@ fun LifeTotalTracker(startingLife: Int) {
     // State variables to keep track of the life totals for both players
     var player1Life by remember { mutableIntStateOf(startingLife) }
     var player2Life by remember { mutableIntStateOf(startingLife) }
+    // State to control the visibility of the NewGameDialog
+    var showDialog by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -42,12 +44,21 @@ fun LifeTotalTracker(startingLife: Int) {
             onDecrement = { player2Life-- }
         )
         Spacer(modifier = Modifier.height(32.dp))
-        // Button to reset the life totals for both players to the starting life total
-        Button(onClick = {
-            player1Life = startingLife
-            player2Life = startingLife
-        }) {
+        // Button to show the NewGameDialog
+        Button(onClick = { showDialog = true }) {
             Text(text = "Reset")
         }
+    }
+
+    // Show the NewGameDialog if showDialog is true
+    if (showDialog) {
+        NewGameDialog(
+            onStartGame = { life ->
+                player1Life = life
+                player2Life = life
+                showDialog = false
+            },
+            onDismiss = { showDialog = false }
+        )
     }
 }
